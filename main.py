@@ -1,11 +1,10 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+import argparse
 import tkinter as tk
 
-from threading import Thread
 from time import sleep
-
 from player import Player
 
 
@@ -31,7 +30,7 @@ KEYS = {
 
 
 class Display(object):
-    def __init__(self, harmonymeter):
+    def __init__(self, harmonymeter, instrument, length, volume):
         super(Display, self).__init__()
 
         self.window = tk.Tk()
@@ -48,10 +47,7 @@ class Display(object):
                                       font=('Arial', 100))
         self.harmony_lable.pack()
 
-        self.player = Player()
-        self.music = Thread(target=self.music_thread)
-
-        self.music.start()
+        self.player = Player(KEYS.values(), instrument, length, volume)
 
         self.harmony_value.set('?')
 
@@ -66,18 +62,23 @@ class Display(object):
         sleep(0.1)
         self.window.destroy()
 
-    def music_thread(self):
-        self.player.play()
-
     def on_key(self, event):
         note = KEYS.get(event.char)
         if note is not None:
-            self.player.enqueue((self.get_side(), note))
+            self.player.play(note)
             self.harmony_value.set(self.harmonymeter.next_note(note))
 
 if __name__ == '__main__':
     from harmonymeters.mock_harmonymeter import MockHarmonymeter
     harmonymeter = MockHarmonymeter()
 
-    display = Display(harmonymeter)
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--instrument", type=str, default='flute')
+    parser.add_argument("--length", type=str, default='05')
+    parser.add_argument("--volume", type=str, default='forte_normal')
+
+    args = parser.parse_args()
+
+    display = Display(harmonymeter, args.instrument, args.length, args.volume)
+
     tk.mainloop()
