@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-from abstract_harmonymeter import AbstractHarmonymeter
+from .abstract_harmonymeter import AbstractHarmonymeter
 
 
 class MockHarmonymeter(AbstractHarmonymeter):

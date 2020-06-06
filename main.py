@@ -76,7 +76,7 @@ class Display(object):
             self.harmony_value.set(self.harmonymeter.next_note(note))
 
 if __name__ == '__main__':
-    from mock_harmonymeter import MockHarmonymeter
+    from harmonymeters.mock_harmonymeter import MockHarmonymeter
     harmonymeter = MockHarmonymeter()
 
     display = Display(harmonymeter)
