@@ -114,6 +114,6 @@ class Player(object):
 
 if __name__ == '__main__':
     player = Player(stop_when_done=True)
-    player.enqueue(('left', 'C'))
-    player.enqueue(('right', 'Eb'))
+    player.enqueue(('left', 'C4'))
+    player.enqueue(('right', 'Ds4'))
     player.play()
