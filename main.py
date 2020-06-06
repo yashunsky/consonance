@@ -31,17 +31,29 @@ KEYS = {
 
 
 class Display(object):
-    def __init__(self):
+    def __init__(self, harmonymeter):
         super(Display, self).__init__()
 
         self.window = tk.Tk()
         self.window.bind("<Key>", self.on_key)
         self.window.protocol("WM_DELETE_WINDOW", self.on_closing)
+        self.window.title('Harmonymeter')
+        self.window.geometry('400x100')
+
+        self.harmonymeter = harmonymeter
+
+        self.harmony_value = tk.StringVar()
+        self.harmony_lable = tk.Label(self.window,
+                                      textvariable=self.harmony_value,
+                                      font=('Arial', 100))
+        self.harmony_lable.pack()
 
         self.player = Player()
         self.music = Thread(target=self.music_thread)
 
         self.music.start()
+
+        self.harmony_value.set('?')
 
     def on_closing(self):
         self.player.stop()
@@ -52,11 +64,14 @@ class Display(object):
         self.player.play()
 
     def on_key(self, event):
-        tone = KEYS.get(event.char)
-        print(tone)
-        if tone is not None:
-            self.player.enqueue(('left', tone))
+        note = KEYS.get(event.char)
+        if note is not None:
+            self.player.enqueue(('left', note))
+            self.harmony_value.set(self.harmonymeter.next_note(note))
 
 if __name__ == '__main__':
-    display = Display()
+    from mock_harmonymeter import MockHarmonymeter
+    harmonymeter = MockHarmonymeter()
+
+    display = Display(harmonymeter)
     tk.mainloop()
