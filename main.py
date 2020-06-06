@@ -55,6 +55,12 @@ class Display(object):
 
         self.harmony_value.set('?')
 
+        self.left = True
+
+    def get_side(self):
+        self.left = not self.left
+        return 'left' if self.left else 'right'
+
     def on_closing(self):
         self.player.stop()
         sleep(0.1)
@@ -66,7 +72,7 @@ class Display(object):
     def on_key(self, event):
         note = KEYS.get(event.char)
         if note is not None:
-            self.player.enqueue(('left', note))
+            self.player.enqueue((self.get_side(), note))
             self.harmony_value.set(self.harmonymeter.next_note(note))
 
 if __name__ == '__main__':
