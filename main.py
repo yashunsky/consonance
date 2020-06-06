@@ -51,12 +51,6 @@ class Display(object):
 
         self.harmony_value.set('?')
 
-        self.left = True
-
-    def get_side(self):
-        self.left = not self.left
-        return 'left' if self.left else 'right'
-
     def on_closing(self):
         self.player.stop()
         sleep(0.1)
