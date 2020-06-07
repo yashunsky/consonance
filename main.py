@@ -63,8 +63,8 @@ class Display(object):
             self.harmony_value.set(self.harmonymeter.next_note(note))
 
 if __name__ == '__main__':
-    from harmonymeters.mock_harmonymeter import MockHarmonymeter
-    harmonymeter = MockHarmonymeter()
+    from harmonymeters.entropy_harmonymeter import EntropyHarmonymeter
+    harmonymeter = EntropyHarmonymeter()
 
     parser = argparse.ArgumentParser()
     parser.add_argument("--instrument", type=str, default='flute')
